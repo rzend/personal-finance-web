@@ -55,9 +55,9 @@ O projeto foi arquitetado seguindo os princípios da **Clean Architecture**, gar
 |:---:|:---:|
 | ![Dashboard Placeholder](https://via.placeholder.com/600x400?text=Screenshot+Dashboard) | ![Transações Placeholder](https://via.placeholder.com/600x400?text=Screenshot+Transacoes) |
 
-| Análises | Mobile View |
-|:---:|:---:|
-| ![Analises Placeholder](https://via.placeholder.com/600x400?text=Screenshot+Analises) | ![Mobile Placeholder](https://via.placeholder.com/300x500?text=Screenshot+Mobile) |
+| Análises |
+|:---:|
+| ![Analises Placeholder](https://via.placeholder.com/600x400?text=Screenshot+Analises) |
 
 ---
 
