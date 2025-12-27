@@ -1,0 +1,78 @@
+<!-- Floating Chat Button -->
+<button class="chat-toggle" (click)="toggleChat()" [class.open]="isOpen">
+    <span class="chat-icon" *ngIf="!isOpen">💬</span>
+    <span class="close-icon" *ngIf="isOpen">✕</span>
+</button>
+
+<!-- Chat Window -->
+<div class="chat-window" [class.open]="isOpen">
+    <!-- Header -->
+    <div class="chat-header">
+        <div class="header-info">
+            <span class="bot-avatar">🤖</span>
+            <div>
+                <h3>FinBot</h3>
+                <span class="status">Assistente Financeiro</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-clear" (click)="clearHistory()" title="Limpar histórico">
+                🗑️
+            </button>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" #messagesContainer>
+        <!-- Welcome message -->
+        <div class="message assistant" *ngIf="messages.length === 0">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+                <p>Olá! 👋 Sou o <strong>FinBot</strong>, seu assistente financeiro pessoal.</p>
+                <p>Posso ajudar com:</p>
+                <ul>
+                    <li>📊 Análise das suas finanças</li>
+                    <li>💡 Dicas de economia</li>
+                    <li>📈 Sugestões de investimento</li>
+                    <li>❓ Dúvidas sobre a aplicação</li>
+                </ul>
+                <p>Como posso ajudar você hoje?</p>
+            </div>
+        </div>
+
+        <!-- Chat messages -->
+        <div *ngFor="let msg of messages" class="message" [class.user]="msg.role === 'user'"
+            [class.assistant]="msg.role === 'assistant'">
+            <div class="message-avatar" *ngIf="msg.role === 'assistant'">🤖</div>
+            <div class="message-content">
+                <p>{{ msg.content }}</p>
+                <span class="message-time">
+                    {{ msg.criadoEm | date:'HH:mm' }}
+                </span>
+            </div>
+            <div class="message-avatar user-avatar" *ngIf="msg.role === 'user'">👤</div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="message assistant typing" *ngIf="isLoading">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input">
+        <textarea #messageInput [(ngModel)]="newMessage" (keypress)="handleKeyPress($event)"
+            placeholder="Digite sua mensagem..." [disabled]="isLoading" rows="1"></textarea>
+        <button class="btn-send" (click)="sendMessage()" [disabled]="!newMessage.trim() || isLoading">
+            <span *ngIf="!isLoading">➤</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+        </button>
+    </div>
+</div>

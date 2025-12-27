@@ -1,0 +1,673 @@
+// ==============================================
+// MAIN STYLES - Global Stylesheet
+// ==============================================
+
+@import 'variables';
+@import 'mixins';
+@import 'reset';
+
+// ==============================================
+// UTILITY CLASSES
+// ==============================================
+
+// Display
+.hidden {
+    display: none !important;
+}
+
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.inline-flex {
+    display: inline-flex;
+}
+
+.grid {
+    display: grid;
+}
+
+// Flex Utilities
+.items-center {
+    align-items: center;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.items-end {
+    align-items: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.gap-1 {
+    gap: $spacing-1;
+}
+
+.gap-2 {
+    gap: $spacing-2;
+}
+
+.gap-3 {
+    gap: $spacing-3;
+}
+
+.gap-4 {
+    gap: $spacing-4;
+}
+
+.gap-6 {
+    gap: $spacing-6;
+}
+
+// Text
+.text-xs {
+    font-size: $font-size-xs;
+}
+
+.text-sm {
+    font-size: $font-size-sm;
+}
+
+.text-base {
+    font-size: $font-size-base;
+}
+
+.text-lg {
+    font-size: $font-size-lg;
+}
+
+.text-xl {
+    font-size: $font-size-xl;
+}
+
+.text-2xl {
+    font-size: $font-size-2xl;
+}
+
+.text-3xl {
+    font-size: $font-size-3xl;
+}
+
+.font-normal {
+    font-weight: $font-weight-normal;
+}
+
+.font-medium {
+    font-weight: $font-weight-medium;
+}
+
+.font-semibold {
+    font-weight: $font-weight-semibold;
+}
+
+.font-bold {
+    font-weight: $font-weight-bold;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-primary {
+    color: $text-primary;
+}
+
+.text-secondary {
+    color: $text-secondary;
+}
+
+.text-muted {
+    color: $text-muted;
+}
+
+.text-success {
+    color: $success;
+}
+
+.text-danger {
+    color: $danger;
+}
+
+.text-warning {
+    color: $warning;
+}
+
+// Spacing
+.m-0 {
+    margin: 0;
+}
+
+.m-auto {
+    margin: auto;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.p-0 {
+    padding: 0;
+}
+
+.p-2 {
+    padding: $spacing-2;
+}
+
+.p-3 {
+    padding: $spacing-3;
+}
+
+.p-4 {
+    padding: $spacing-4;
+}
+
+.p-6 {
+    padding: $spacing-6;
+}
+
+.px-4 {
+    padding-left: $spacing-4;
+    padding-right: $spacing-4;
+}
+
+.py-2 {
+    padding-top: $spacing-2;
+    padding-bottom: $spacing-2;
+}
+
+.py-4 {
+    padding-top: $spacing-4;
+    padding-bottom: $spacing-4;
+}
+
+.mb-2 {
+    margin-bottom: $spacing-2;
+}
+
+.mb-4 {
+    margin-bottom: $spacing-4;
+}
+
+.mb-6 {
+    margin-bottom: $spacing-6;
+}
+
+.mt-4 {
+    margin-top: $spacing-4;
+}
+
+.mt-6 {
+    margin-top: $spacing-6;
+}
+
+// Width/Height
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+// Border Radius
+.rounded {
+    border-radius: $radius-md;
+}
+
+.rounded-lg {
+    border-radius: $radius-lg;
+}
+
+.rounded-xl {
+    border-radius: $radius-xl;
+}
+
+.rounded-full {
+    border-radius: $radius-full;
+}
+
+// Shadows
+.shadow-sm {
+    box-shadow: $shadow-sm;
+}
+
+.shadow-md {
+    box-shadow: $shadow-md;
+}
+
+.shadow-lg {
+    box-shadow: $shadow-lg;
+}
+
+// Background
+.bg-white {
+    background: $bg-secondary;
+}
+
+.bg-gray-50 {
+    background: $gray-50;
+}
+
+.bg-gray-100 {
+    background: $gray-100;
+}
+
+.bg-primary {
+    background: $primary;
+}
+
+.bg-success {
+    background: $success;
+}
+
+.bg-danger {
+    background: $danger;
+}
+
+// ==============================================
+// COMPONENT BASE STYLES
+// ==============================================
+
+// Cards
+.card {
+    @include card-base;
+    padding: $spacing-6;
+}
+
+.card-sm {
+    @include card-base;
+    padding: $spacing-4;
+}
+
+.card-hover {
+    @include card-hover;
+}
+
+// Buttons
+.btn {
+    @include btn-base;
+}
+
+.btn-primary {
+    @include btn-primary;
+}
+
+.btn-secondary {
+    @include btn-secondary;
+}
+
+.btn-success {
+    @include btn-success;
+}
+
+.btn-danger {
+    @include btn-danger;
+}
+
+.btn-ghost {
+    @include btn-ghost;
+}
+
+.btn-outline {
+    @include btn-outline;
+}
+
+.btn-sm {
+    padding: $spacing-1 $spacing-3;
+    font-size: $font-size-xs;
+}
+
+.btn-lg {
+    padding: $spacing-3 $spacing-6;
+    font-size: $font-size-base;
+}
+
+.btn-icon {
+    padding: $spacing-2;
+    border-radius: $radius-lg;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+// Form Elements
+.form-group {
+    margin-bottom: $spacing-4;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: $spacing-2;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $text-primary;
+}
+
+.form-input {
+    @include input-base;
+}
+
+.form-select {
+    @include input-base;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $spacing-3 center;
+    background-size: 20px;
+    padding-right: $spacing-10;
+}
+
+.form-textarea {
+    @include input-base;
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-error {
+    margin-top: $spacing-1;
+    font-size: $font-size-xs;
+    color: $danger;
+}
+
+.form-hint {
+    margin-top: $spacing-1;
+    font-size: $font-size-xs;
+    color: $text-muted;
+}
+
+// Badges
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: $spacing-1 $spacing-2;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    border-radius: $radius-full;
+}
+
+.badge-primary {
+    color: $primary;
+    background: $primary-50;
+}
+
+.badge-success {
+    color: $success-dark;
+    background: rgba($success, 0.1);
+}
+
+.badge-danger {
+    color: $danger-dark;
+    background: rgba($danger, 0.1);
+}
+
+.badge-warning {
+    color: $warning-dark;
+    background: rgba($warning, 0.1);
+}
+
+.badge-gray {
+    color: $gray-700;
+    background: $gray-100;
+}
+
+// Status Badges
+.status-ativo {
+    @include status-badge($success);
+}
+
+.status-inativo {
+    @include status-badge($warning);
+}
+
+.status-bloqueado {
+    @include status-badge($danger);
+}
+
+// Tables
+.table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: $spacing-3 $spacing-4;
+        text-align: left;
+        border-bottom: 1px solid $border-color;
+    }
+
+    th {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        color: $text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: $gray-50;
+    }
+
+    tr:hover td {
+        background: $gray-50;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+}
+
+// Loading
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid $gray-200;
+    border-top-color: $primary;
+    border-radius: $radius-full;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.skeleton {
+    @include skeleton;
+}
+
+// Alerts
+.alert {
+    padding: $spacing-4;
+    border-radius: $radius-lg;
+    margin-bottom: $spacing-4;
+}
+
+.alert-success {
+    background: rgba($success, 0.1);
+    border: 1px solid rgba($success, 0.2);
+    color: $success-dark;
+}
+
+.alert-danger {
+    background: rgba($danger, 0.1);
+    border: 1px solid rgba($danger, 0.2);
+    color: $danger-dark;
+}
+
+.alert-warning {
+    background: rgba($warning, 0.1);
+    border: 1px solid rgba($warning, 0.2);
+    color: $warning-dark;
+}
+
+.alert-info {
+    background: rgba($info, 0.1);
+    border: 1px solid rgba($info, 0.2);
+    color: $info-dark;
+}
+
+// ==============================================
+// LAYOUT
+// ==============================================
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: $sidebar-width;
+    background: $bg-sidebar;
+    color: $text-inverse;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: $z-fixed;
+    transition: width $transition-normal;
+
+    @include respond-below($breakpoint-lg) {
+        transform: translateX(-100%);
+
+        &.open {
+            transform: translateX(0);
+        }
+    }
+}
+
+.app-main {
+    flex: 1;
+    margin-left: $sidebar-width;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    @include respond-below($breakpoint-lg) {
+        margin-left: 0;
+    }
+}
+
+.app-header {
+    height: $header-height;
+    background: $bg-secondary;
+    border-bottom: 1px solid $border-color;
+    @include flex-between;
+    padding: 0 $spacing-6;
+    position: sticky;
+    top: 0;
+    z-index: $z-sticky;
+}
+
+.app-content {
+    flex: 1;
+    padding: $spacing-6;
+    max-width: $container-max-width;
+    width: 100%;
+    margin: 0 auto;
+
+    @include respond-below($breakpoint-md) {
+        padding: $spacing-4;
+    }
+}
+
+// Page Header
+.page-header {
+    margin-bottom: $spacing-6;
+
+    h1 {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $text-primary;
+        margin-bottom: $spacing-1;
+    }
+
+    p {
+        color: $text-secondary;
+        margin: 0;
+    }
+}
+
+// ==============================================
+// ANIMATIONS
+// ==============================================
+
+.fade-in {
+    @include fade-in;
+}
+
+.slide-up {
+    @include slide-up;
+}
+
+// ==============================================
+// RESPONSIVE UTILITIES
+// ==============================================
+
+@include respond-below($breakpoint-md) {
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+@include respond-to($breakpoint-md) {
+    .hide-desktop {
+        display: none !important;
+    }
+}
+
+// ==============================================
+// ACCESSIBILITY
+// ==============================================
+
+.sr-only {
+    @include sr-only;
+}
+
+// Focus styles
+:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px $primary-100;
+}

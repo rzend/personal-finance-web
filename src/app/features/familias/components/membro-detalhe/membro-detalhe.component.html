@@ -1,0 +1,194 @@
+<div class="detalhe-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-info">
+            <div class="member-avatar-large">
+                {{ memberInitials }}
+            </div>
+            <div>
+                <h1>{{ memberName || 'Detalhes do Membro' }}</h1>
+                <p>Visualize transações e análise financeira deste membro</p>
+            </div>
+        </div>
+        <a routerLink="../../" class="btn-back">
+            ← Voltar
+        </a>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-btn" [class.active]="activeTab === 'transacoes'" (click)="activeTab = 'transacoes'">
+                📋 Transações
+            </button>
+            <button class="tab-btn" [class.active]="activeTab === 'analise'" (click)="activeTab = 'analise'">
+                📊 Análise
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="section-card">
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Carregando dados do membro...</p>
+        </div>
+    </div>
+
+    <ng-container *ngIf="!loading">
+        <!-- ==================== TAB: TRANSAÇÕES ==================== -->
+        <div *ngIf="activeTab === 'transacoes'">
+            <!-- Quick Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: #dbeafe;">📊</div>
+                    <div class="metric-value">{{ transacoes.length }}</div>
+                    <div class="metric-label">Total de Transações</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: #fee2e2;">💸</div>
+                    <div class="metric-value red">{{ totalDespesas | currency:'BRL' }}</div>
+                    <div class="metric-label">Total Despesas</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon" style="background: #dcfce7;">💰</div>
+                    <div class="metric-value green">{{ totalReceitas | currency:'BRL' }}</div>
+                    <div class="metric-label">Total Receitas</div>
+                </div>
+            </div>
+
+            <!-- Transactions Table -->
+            <div class="section-card">
+                <h2><span class="icon">📋</span> Transações Recentes</h2>
+
+                <div class="transactions-table-container" *ngIf="transacoes.length > 0">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th style="text-align: right;">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let t of transacoes">
+                                <td class="transaction-date">{{ t.data | date:'dd/MM/yyyy' }}</td>
+                                <td class="transaction-description">{{ t.descricao }}</td>
+                                <td>
+                                    <span class="transaction-category">
+                                        {{ getCategoryIcon(t.categoria) }} {{ getCategoryLabel(t.categoria) }}
+                                    </span>
+                                </td>
+                                <td class="transaction-value" [class.despesa]="isDespesa(t.tipo)"
+                                    [class.receita]="isReceita(t.tipo)">
+                                    {{ isDespesa(t.tipo) ? '-' : '+' }}{{ t.valorOriginal | currency:t.moedaOriginal
+                                    }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" *ngIf="transacoes.length === 0">
+                    <div class="icon">📋</div>
+                    <p>Nenhuma transação encontrada</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: ANÁLISE ==================== -->
+        <div *ngIf="activeTab === 'analise'">
+            <ng-container *ngIf="analise">
+                <!-- Investments Section (if any) -->
+                <div class="section-card investments-card" *ngIf="analise.totalInvestimentos > 0">
+                    <h2><span class="icon">💎</span> Investimentos</h2>
+                    <div class="investments-grid">
+                        <div class="investment-metric">
+                            <span class="label">Total Investido</span>
+                            <span class="value">{{ analise.totalInvestimentos | currency:'BRL' }}</span>
+                            <span class="sublabel">{{ analise.quantidadeInvestimentos }} aportes</span>
+                        </div>
+                        <div class="investment-metric">
+                            <span class="label">Ticket Médio</span>
+                            <span class="value">{{ analise.ticketMedioInvestimentos | currency:'BRL' }}</span>
+                            <span class="sublabel">por aporte</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background: #fee2e2;">💸</div>
+                        <div class="metric-value red">{{ analise.totalGeral | currency:'BRL' }}</div>
+                        <div class="metric-label">Total de Despesas</div>
+                        <div class="metric-sublabel">{{ analise.periodo }}</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon" style="background: #fef3c7;">📊</div>
+                        <div class="metric-value">{{ analise.quantidadeTransacoes }}</div>
+                        <div class="metric-label">Transações</div>
+                        <div class="metric-sublabel">No período</div>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="section-card">
+                    <h2><span class="icon">🏷️</span> Despesas por Categoria</h2>
+
+                    <div class="category-grid"
+                        *ngIf="analise.resumoPorCategoria && analise.resumoPorCategoria.length > 0">
+                        <div class="category-card" *ngFor="let cat of analise.resumoPorCategoria">
+                            <div class="category-icon" [style.background]="getCategoryBgColor(cat.categoria)">
+                                {{ getCategoryIcon(cat.categoria) }}
+                            </div>
+                            <div class="category-info">
+                                <span class="category-name">{{ getCategoryLabel(cat.categoria) }}</span>
+                                <span class="category-count">{{ cat.quantidade }} transações</span>
+                            </div>
+                            <div class="category-values">
+                                <span class="category-total">{{ cat.total | currency:'BRL' }}</span>
+                                <div class="category-details-row">
+                                    <span class="category-ticket">TM: {{ cat.ticketMedio | currency:'BRL' }}</span>
+                                    <span class="category-percent" [style.color]="getCategoryColor(cat.categoria)">
+                                        {{ cat.percentual | number:'1.0-0' }}%
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="category-bar-container">
+                                <div class="category-bar" [style.width.%]="cat.percentual"
+                                    [style.background]="getCategoryColor(cat.categoria)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="empty-state"
+                        *ngIf="!analise.resumoPorCategoria || analise.resumoPorCategoria.length === 0">
+                        <div class="icon">🏷️</div>
+                        <p>Nenhuma despesa por categoria no período</p>
+                    </div>
+                </div>
+
+                <!-- Monthly Evolution -->
+                <div class="section-card" *ngIf="monthlyData.length > 0">
+                    <h2><span class="icon">📈</span> Evolução Mensal</h2>
+                    <div class="monthly-chart">
+                        <div class="month-bar" *ngFor="let month of monthlyData"
+                            [title]="month.label + ': ' + (month.value | currency:'BRL')">
+                            <div class="bar-fill" [style.height.%]="month.percentage"></div>
+                            <div class="month-label">{{ month.shortLabel }}</div>
+                            <div class="month-value">{{ month.value | currency:'BRL':'symbol':'1.0-0' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="empty-state" *ngIf="!analise">
+                <div class="icon">📊</div>
+                <p>Dados de análise não disponíveis</p>
+            </div>
+        </div>
+    </ng-container>
+</div>

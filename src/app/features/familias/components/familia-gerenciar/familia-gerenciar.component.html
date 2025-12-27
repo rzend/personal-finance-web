@@ -1,0 +1,106 @@
+<div class="familia-page">
+    <div class="page-header">
+        <div>
+            <h1>Gestão de Família 👨‍👩‍👧‍👦</h1>
+            <p>Gerencie os membros da sua família e compartilhe relatórios</p>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="section-card" style="text-align: center; padding: 48px;">
+        <div style="font-size: 32px; margin-bottom: 16px;">⏳</div>
+        <p style="color: #6b7280;">Carregando informações da família...</p>
+    </div>
+
+    <!-- Criar Família (Exibido se não tiver família) -->
+    <div *ngIf="!isLoading && !temFamilia" class="section-card create-family-card">
+        <h2><span class="icon">🏠</span> Criar Nova Família</h2>
+        <p style="color: #6b7280; margin-bottom: 24px;">
+            Você ainda não faz parte de uma família. Crie uma para compartilhar análises e relatórios com seus
+            familiares.
+        </p>
+        <form [formGroup]="familiaForm" (ngSubmit)="criarFamilia()">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>Nome da Família</label>
+                    <input type="text" formControlName="nome" class="form-input" placeholder="Ex: Família Silva">
+                </div>
+                <button type="submit" [disabled]="familiaForm.invalid" class="btn btn-primary">
+                    ✨ Criar Família
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Conteúdo quando tem família -->
+    <ng-container *ngIf="!isLoading && temFamilia">
+        <!-- Métricas -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon" style="background: #dbeafe;">👥</div>
+                <div class="metric-value">{{ membros.length }}</div>
+                <div class="metric-label">Membros na Família</div>
+            </div>
+            <div class="metric-card" *ngIf="familyName">
+                <div class="metric-icon" style="background: #fef3c7;">🏠</div>
+                <div class="metric-value" style="font-size: 20px;">{{ familyName }}</div>
+                <div class="metric-label">Nome da Família</div>
+            </div>
+        </div>
+
+        <!-- Lista de Membros -->
+        <div class="section-card">
+            <h2><span class="icon">👥</span> Membros da Família</h2>
+
+            <div class="members-grid" *ngIf="membros.length > 0">
+                <div *ngFor="let membro of membros" class="member-card">
+                    <div class="member-info">
+                        <div class="member-avatar">
+                            {{ getInitials(membro.nomeCompleto) }}
+                        </div>
+                        <div class="member-details">
+                            <h3>{{ membro.nomeCompleto }}</h3>
+                            <p>{{ membro.email }}</p>
+                        </div>
+                    </div>
+                    <div *ngIf="isGestor" class="member-actions">
+                        <button [routerLink]="['/minha-familia', membro.id, 'detalhes']" class="btn btn-secondary">
+                            📊 Detalhes
+                        </button>
+                        <button (click)="downloadPdf(membro)" class="btn btn-danger">
+                            📄 PDF
+                        </button>
+                        <button (click)="downloadExcel(membro)" class="btn btn-success">
+                            📊 Excel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" *ngIf="membros.length === 0">
+                <div class="icon">👥</div>
+                <p>Nenhum membro na família ainda</p>
+            </div>
+        </div>
+
+        <!-- Adicionar Membro (Apenas Gestor) -->
+        <div *ngIf="isGestor" class="section-card">
+            <h2><span class="icon">➕</span> Adicionar Novo Membro</h2>
+            <p style="color: #6b7280; margin-bottom: 20px;">
+                Adicione um usuário existente à sua família pelo ID dele.
+            </p>
+            <form [formGroup]="membroForm" (ngSubmit)="adicionarMembro()">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>ID do Usuário</label>
+                        <input type="number" formControlName="usuarioId" class="form-input"
+                            placeholder="Digite o ID do usuário">
+                    </div>
+                    <button type="submit" [disabled]="membroForm.invalid" class="btn btn-primary">
+                        ➕ Adicionar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </ng-container>
+</div>

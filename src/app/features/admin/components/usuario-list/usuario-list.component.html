@@ -1,0 +1,71 @@
+<div class="page-header">
+    <h1>Gestão de Usuários</h1>
+    <p>Administração de usuários do sistema</p>
+</div>
+
+<!-- Alerts -->
+<div *ngIf="message" class="alert alert-success">{{ message }}</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<!-- Import Section -->
+<div class="card mb-6">
+    <div class="flex items-center gap-4">
+        <label class="font-medium">Importar Usuários (Excel):</label>
+        <input type="file" (change)="onFileSelected($event)" accept=".xlsx, .xls" class="form-input w-auto" />
+        <button [disabled]="!selectedFile || loading" (click)="importarExcel()" class="btn btn-primary">
+            Importar
+        </button>
+    </div>
+</div>
+
+<!-- Users Table -->
+<div class="card p-0 overflow-hidden">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Criado Em</th>
+                <th class="text-right">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let usuario of usuarios">
+                <td>#{{ usuario.id }}</td>
+                <td>
+                    <div class="font-medium">{{ usuario.nomeCompleto }}</div>
+                    <div class="text-xs text-muted">{{ usuario.cpf }}</div>
+                </td>
+                <td>{{ usuario.email }}</td>
+                <td>
+                    <span [ngClass]="{
+                        'status-ativo': usuario.status === 'ATIVO',
+                        'status-inativo': usuario.status === 'INATIVO',
+                        'status-bloqueado': usuario.status === 'BLOQUEADO'
+                    }" class="badge">
+                        {{ usuario.status }}
+                    </span>
+                </td>
+                <td>{{ usuario.criadoEm | date:'shortDate' }}</td>
+                <td class="text-right">
+                    <button class="btn btn-sm btn-ghost text-primary"
+                        [routerLink]="['/admin/usuarios', usuario.id, 'editar']">
+                        Editar
+                    </button>
+                    <button class="btn btn-sm btn-ghost text-danger ml-2" (click)="excluirUsuario(usuario.id)">
+                        Excluir
+                    </button>
+                </td>
+            </tr>
+            <tr *ngIf="usuarios.length === 0 && !loading">
+                <td colspan="6" class="text-center py-6 text-muted">Ainda não há usuários cadastrados.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="loading" class="flex justify-center mt-6">
+    <div class="spinner"></div>
+</div>

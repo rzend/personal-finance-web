@@ -1,0 +1,322 @@
+// ==============================================
+// MIXINS - Reusable Style Patterns
+// ==============================================
+
+// Flexbox
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+// Grid
+@mixin grid-cols($cols, $gap: $spacing-4) {
+    display: grid;
+    grid-template-columns: repeat($cols, 1fr);
+    gap: $gap;
+}
+
+// Responsive
+@mixin respond-to($breakpoint) {
+    @media (min-width: $breakpoint) {
+        @content;
+    }
+}
+
+@mixin respond-below($breakpoint) {
+    @media (max-width: calc(#{$breakpoint} - 1px)) {
+        @content;
+    }
+}
+
+// Cards
+@mixin card-base {
+    background: $bg-card;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-color;
+}
+
+@mixin card-hover {
+    transition: box-shadow $transition-normal, transform $transition-normal;
+
+    &:hover {
+        box-shadow: $shadow-md;
+        transform: translateY(-2px);
+    }
+}
+
+// Buttons
+@mixin btn-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-2;
+    padding: $spacing-2 $spacing-4;
+    font-family: $font-family;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    border-radius: $radius-lg;
+    border: none;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+@mixin btn-primary {
+    @include btn-base;
+    background: $primary;
+    color: $text-inverse;
+
+    &:hover:not(:disabled) {
+        background: $primary-dark;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px $primary-100;
+    }
+}
+
+@mixin btn-secondary {
+    @include btn-base;
+    background: $gray-100;
+    color: $text-primary;
+
+    &:hover:not(:disabled) {
+        background: $gray-200;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px $gray-200;
+    }
+}
+
+@mixin btn-success {
+    @include btn-base;
+    background: $success;
+    color: $text-inverse;
+
+    &:hover:not(:disabled) {
+        background: $success-dark;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($success, 0.3);
+    }
+}
+
+@mixin btn-danger {
+    @include btn-base;
+    background: $danger;
+    color: $text-inverse;
+
+    &:hover:not(:disabled) {
+        background: $danger-dark;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($danger, 0.3);
+    }
+}
+
+@mixin btn-ghost {
+    @include btn-base;
+    background: transparent;
+    color: $text-secondary;
+
+    &:hover:not(:disabled) {
+        background: $gray-100;
+        color: $text-primary;
+    }
+}
+
+@mixin btn-outline {
+    @include btn-base;
+    background: transparent;
+    color: $primary;
+    border: 1px solid $primary;
+
+    &:hover:not(:disabled) {
+        background: $primary-50;
+    }
+}
+
+// Inputs
+@mixin input-base {
+    width: 100%;
+    padding: $spacing-3 $spacing-4;
+    font-family: $font-family;
+    font-size: $font-size-base;
+    color: $text-primary;
+    background: $bg-secondary;
+    border: 1px solid $border-color;
+    border-radius: $radius-lg;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+    &::placeholder {
+        color: $text-muted;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 3px $primary-100;
+    }
+
+    &:disabled {
+        background: $gray-100;
+        cursor: not-allowed;
+    }
+}
+
+// Text Utilities
+@mixin text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin text-clamp($lines) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// Scrollbar
+@mixin custom-scrollbar {
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $gray-100;
+        border-radius: $radius-full;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $gray-300;
+        border-radius: $radius-full;
+
+        &:hover {
+            background: $gray-400;
+        }
+    }
+}
+
+// Status Badge
+@mixin status-badge($color) {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-1;
+    padding: $spacing-1 $spacing-2;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color;
+    background: rgba($color, 0.1);
+    border-radius: $radius-full;
+
+    &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: $color;
+        border-radius: $radius-full;
+    }
+}
+
+// Skeleton Loading
+@mixin skeleton {
+    background: linear-gradient(90deg, $gray-200 25%, $gray-100 50%, $gray-200 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: $radius-md;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// Animations
+@mixin fade-in {
+    animation: fadeIn $transition-normal;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@mixin slide-up {
+    animation: slideUp $transition-normal;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Focus Visible
+@mixin focus-ring {
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px $primary-100;
+    }
+}
+
+// Screen Reader Only
+@mixin sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
